@@ -1,20 +1,21 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-// අයිතම වර්ග (කිරුළ, පලිහ, කොළ ආදී වශයෙන්)
 const ITEMS = ['👑', '🛡️', '🍃', '📖'];
 
 export default function Match3Game() {
-  // 8x8 ග්‍රිඩ් එකක් මුලින් සකස් කරගැනීම
-  const [board, setBoard] = useState<string[][]>(() => {
-    return Array(8).fill(null).map(() => 
-      Array(8).fill(null).map(() => ITEMS[Math.floor(Math.random() * ITEMS.length)])
-    );
-  });
-
+  const [board, setBoard] = useState<string[][]>([]);
   const [moves, setMoves] = useState(27);
   const [target, setTarget] = useState(36);
+
+  // බ්‍රව්සරය ලෝඩ් වූ පසු පමණක් බෝල පිරවීම (Prerender දෝෂය මඟහරවා ගැනීමට)
+  useEffect(() => {
+    const initialBoard = Array(8).fill(null).map(() => 
+      Array(8).fill(null).map(() => ITEMS[Math.floor(Math.random() * ITEMS.length)])
+    );
+    setBoard(initialBoard);
+  }, []);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-slate-900 text-white p-4">
@@ -40,15 +41,19 @@ export default function Match3Game() {
       {/* ප්‍රධාන ක්‍රීඩා ග්‍රිඩ් පුවරුව (8x8 Grid) */}
       <div className="bg-amber-900/60 p-3 rounded-2xl border-4 border-amber-600 shadow-2xl backdrop-blur-sm">
         <div className="grid grid-cols-8 gap-1.5">
-          {board.map((row, rowIndex) => 
-            row.map((cell, colIndex) => (
-              <button
-                key={`${rowIndex}-${colIndex}`}
-                className="w-10 h-10 md:w-12 md:h-12 bg-amber-800/80 hover:bg-amber-700 rounded-lg flex items-center justify-center text-2xl transition-all transform active:scale-95 shadow-inner border border-amber-500/40"
-              >
-                {cell}
-              </button>
-            ))
+          {board.length > 0 ? (
+            board.map((row, rowIndex) => 
+              row.map((cell, colIndex) => (
+                <button
+                  key={`${rowIndex}-${colIndex}`}
+                  className="w-10 h-10 md:w-12 md:h-12 bg-amber-800/80 hover:bg-amber-700 rounded-lg flex items-center justify-center text-2xl transition-all transform active:scale-95 shadow-inner border border-amber-500/40"
+                >
+                  {cell}
+                </button>
+              ))
+            )
+          ) : (
+            <div className="col-span-8 text-center py-10 text-amber-300">Loading Game...</div>
           )}
         </div>
       </div>

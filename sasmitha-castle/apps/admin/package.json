@@ -1,0 +1,5 @@
+{
+  "name":"sasmitha-castle-admin","version":"1.0.0","private":true,
+  "scripts":{"dev":"next dev --hostname 0.0.0.0","build":"next build","start":"next start"},
+  "dependencies":{"firebase":"^11.10.0","lucide-react":"^0.468.0","next":"^15.3.3","react":"^19.1.0","react-dom":"^19.1.0"}
+}

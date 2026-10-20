@@ -1,0 +1,20 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Players may read/write only their own progress document.
+    match /players/{uid} {
+      allow read, create, update: if request.auth != null
+        && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['email','score','level','updatedAt'])
+        && request.resource.data.score is int
+        && request.resource.data.level is int
+        && request.resource.data.level >= 1
+        && request.resource.data.level <= 10;
+      allow delete: if request.auth != null && request.auth.uid == uid;
+    }
+    // Default-deny all other documents until admin-only content rules are added.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

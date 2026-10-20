@@ -1,0 +1,12 @@
+{
+  "name": "sasmitha-castle",
+  "private": true,
+  "version": "1.0.0",
+  "workspaces": ["apps/game", "apps/admin", "packages/shared"],
+  "scripts": {
+    "dev:game": "npm --workspace apps/game run dev",
+    "dev:admin": "npm --workspace apps/admin run dev",
+    "build:game": "npm --workspace apps/game run build",
+    "build:admin": "npm --workspace apps/admin run build"
+  }
+}
